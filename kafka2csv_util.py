@@ -224,6 +224,7 @@ def consume_and_write_csv_avro(topic_name):
                 messages_consumed_overall += 1
 
             if len(batch_messages) >= 100 or messages_in_current_file + len(batch_messages) >= MAX_MESSAGES_PER_FILE:
+                logging.info(f"Writing batch of {len(batch_messages)} messages to file {current_filename or base_csv_filename}")
                 current_filename, header_written, messages_in_current_file = write_batch_to_file(
                     batch_messages, base_csv_filename, current_filename, header_written, messages_in_current_file
                 )
@@ -243,6 +244,7 @@ def all_partitions_consumed(consumer, partition_high_watermarks):
     for tp in consumer.assignment():
         current_position = consumer.position([tp])[0].offset
         high_watermark = partition_high_watermarks.get(tp.partition)
+        logging.info(f"tp={tp}, current_position={current_position}, high_watermark={high_watermark}")
         if high_watermark is None or current_position < high_watermark:
             return False
     return True
