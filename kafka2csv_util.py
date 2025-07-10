@@ -196,6 +196,7 @@ def consume_and_write_csv_avro(topic_name):
     value_serde = AvroDeserializer(schema_registry_client, value_schema_str)
 
     consumer, partition_high_watermarks = initialize_consumer(topic_name)
+    logging.info(f"Initialized consumer for topic {topic_name} with group ID {consumer.group_id()}, partition high watermarks: {partition_high_watermarks}")
     if not consumer:
         return
 
@@ -245,6 +246,9 @@ def all_partitions_consumed(consumer, partition_high_watermarks):
         current_position = consumer.position([tp])[0].offset
         high_watermark = partition_high_watermarks.get(tp.partition)
         logging.info(f"tp={tp}, current_position={current_position}, high_watermark={high_watermark}")
+        # If the high watermark is 0, consider the partition consumed
+        if high_watermark == 0:
+            continue
         if high_watermark is None or current_position < high_watermark:
             return False
     return True
