@@ -28,7 +28,6 @@ MAX_MESSAGES_PER_FILE = 1000 # To prevent excessively large CSVs
 CONSUMER_GROUP_ID = 'avro_csv_exporter_group_' + datetime.now().strftime('%Y%m%d%H%M%S') # Unique group ID
 CONSUMER_GROUP_BASE_ID = 'avro_csv_topic_exporter'
 # --- List of Topics to Process ---
-#com.mdsol.schema.ravecdc.fields
 TOPICS_TO_PROCESS = os.getenv("KAFKA_TOPICS").split(",")
 # --- End Global Configuration ---
 
