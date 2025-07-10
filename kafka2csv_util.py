@@ -196,7 +196,7 @@ def consume_and_write_csv_avro(topic_name):
     value_serde = AvroDeserializer(schema_registry_client, value_schema_str)
 
     consumer, partition_high_watermarks = initialize_consumer(topic_name)
-    logging.info(f"Initialized consumer for topic {topic_name} with group ID {consumer.group_id()}, partition high watermarks: {partition_high_watermarks}")
+    logging.info(f"Initialized consumer for topic {topic_name} with group ID {CONSUMER_GROUP_ID}, partition high watermarks: {partition_high_watermarks}")
     if not consumer:
         return
 
